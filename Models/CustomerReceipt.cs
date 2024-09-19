@@ -10,6 +10,8 @@ namespace split_api.Models
         public int Id { get; set; }
         public int UserId { get; set; }
         public int ReceiptId { get; set; }
+        public bool isOwner { get; set; }
         public bool IsPaid { get; set; }
+        public DateTime DateTimePaid { get; set; }
     }
 }
