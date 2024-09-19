@@ -18,6 +18,5 @@ namespace split_api.Data
         public DbSet<Receipt> Receipts { get; set; }
         public DbSet<CustomerReceipt> CustomerReceipts { get; set; }
         public DbSet<Item> Items { get; set; }
-
     }
 }
