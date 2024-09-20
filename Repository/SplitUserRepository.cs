@@ -23,5 +23,9 @@ namespace split_api.Repository
             return await _context.SplitUsers.ToListAsync();
         }
 
+        public async Task<SplitUser?> GetByIdAsync(int id)
+        {
+            return await _context.SplitUsers.FindAsync(id);
+        }
     }
 }
