@@ -18,6 +18,14 @@ namespace split_api.Repository
             _context = context;
         }
 
+        public async Task<SplitUser> CreateAsync(SplitUser userModel)
+        {
+            await _context.SplitUsers.AddAsync(userModel);
+            await _context.SaveChangesAsync();
+
+            return userModel;
+        }
+
         public async Task<List<SplitUser>> GetAllAsync()
         {
             return await _context.SplitUsers.ToListAsync();
