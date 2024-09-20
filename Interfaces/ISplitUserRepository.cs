@@ -9,5 +9,6 @@ namespace split_api.Interfaces
     public interface ISplitUserRepository
     {
         Task<List<SplitUser>> GetAllAsync();
+        Task<SplitUser?> GetByIdAsync(int id);
     }
 }
