@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using split_api.Data;
+using split_api.DTO.SplitUser;
 using split_api.Interfaces;
 using split_api.Mappers;
 
@@ -40,7 +41,20 @@ namespace split_api.Controllers
             var user = await _splitUserRepo.GetByIdAsync(id);
             if (user is null) return NotFound();
 
-            return Ok(user.ToSplitUserDto());
+            return Ok(user);
+        }
+
+        /*
+            POST REQUEST
+        */
+
+        [HttpPost]
+        public async Task<IActionResult> Create([FromBody] CreateSplitUserDto userDto)
+        {
+            var userModel = userDto.ToSplitUserFromCreateSplitUserDto();
+            await _splitUserRepo.CreateAsync(userModel);
+
+            return CreatedAtAction(nameof(GetById), new { id = userModel.Id }, userModel.ToSplitUserDto());
         }
     }
 }

@@ -10,5 +10,6 @@ namespace split_api.Interfaces
     {
         Task<List<SplitUser>> GetAllAsync();
         Task<SplitUser?> GetByIdAsync(int id);
+        Task<SplitUser> CreateAsync(SplitUser userModel);
     }
 }

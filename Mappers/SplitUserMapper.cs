@@ -17,5 +17,15 @@ namespace split_api.Mappers
                 FullName = splitUserModel.FullName,
             };
         }
+
+
+        public static SplitUser ToSplitUserFromCreateSplitUserDto(this CreateSplitUserDto splitUserDto)
+        {
+            return new SplitUser
+            {
+                FullName = splitUserDto.FullName,
+                PhoneNumber = splitUserDto.PhoneNumber,
+            };
+        }
     }
 }
