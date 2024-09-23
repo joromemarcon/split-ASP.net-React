@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
 using split_api.Data;
+using split_api.DTO.SplitUser;
 using split_api.Interfaces;
 using split_api.Models;
 
@@ -51,6 +52,19 @@ namespace split_api.Repository
             await _context.SaveChangesAsync();
 
             return splitUserModel;
+        }
+
+        public async Task<SplitUser?> UpdateAsync(int id, UpdateUserDto updateUser)
+        {
+            var existingSplitUser = await _context.SplitUsers.FirstOrDefaultAsync(u => u.Id == id);
+            if (existingSplitUser is null) return null;
+
+            existingSplitUser.FullName = updateUser.FullName;
+            existingSplitUser.PhoneNumber = updateUser.PhoneNumber;
+
+            await _context.SaveChangesAsync();
+
+            return existingSplitUser;
         }
     }
 }

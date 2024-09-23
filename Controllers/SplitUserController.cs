@@ -7,6 +7,7 @@ using split_api.Data;
 using split_api.DTO.SplitUser;
 using split_api.Interfaces;
 using split_api.Mappers;
+using split_api.Models;
 
 namespace split_api.Controllers
 {
@@ -68,6 +69,19 @@ namespace split_api.Controllers
 
             return CreatedAtAction(nameof(GetById), new { id = userModel.Id }, userModel.ToSplitUserDto());
         }
+
+        /*
+            UPDATE REQUEST
+        */
+        [HttpPut("{id}")]
+
+        public async Task<IActionResult> Update([FromRoute] int id, [FromBody] UpdateUserDto updateUserDto)
+        {
+            var splitUserModel = await _splitUserRepo.UpdateAsync(id, updateUserDto);
+            if (splitUserModel is null) return NotFound();
+            return NoContent();
+        }
+
 
 
         /*
