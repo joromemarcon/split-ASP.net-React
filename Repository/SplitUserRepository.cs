@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
 using split_api.Data;
 using split_api.Interfaces;
@@ -34,6 +35,11 @@ namespace split_api.Repository
         public async Task<SplitUser?> GetByIdAsync(int id)
         {
             return await _context.SplitUsers.FindAsync(id);
+        }
+
+        public async Task<SplitUser?> GetByName(string name)
+        {
+            return await _context.SplitUsers.FirstOrDefaultAsync(u => u.FullName == name);
         }
     }
 }
