@@ -12,5 +12,6 @@ namespace split_api.Interfaces
         Task<SplitUser?> GetByIdAsync(int id);
         Task<SplitUser> CreateAsync(SplitUser userModel);
         Task<SplitUser?> GetByName(string name);
+        Task<SplitUser?> DeleteAsync(int id);
     }
 }

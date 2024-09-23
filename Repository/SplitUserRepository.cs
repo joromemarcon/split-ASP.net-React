@@ -41,5 +41,16 @@ namespace split_api.Repository
         {
             return await _context.SplitUsers.FirstOrDefaultAsync(u => u.FullName == name);
         }
+
+        public async Task<SplitUser?> DeleteAsync(int id)
+        {
+            var splitUserModel = await _context.SplitUsers.FirstOrDefaultAsync(u => u.Id == id);
+            if (splitUserModel is null) return null;
+
+            _context.SplitUsers.Remove(splitUserModel);
+            await _context.SaveChangesAsync();
+
+            return splitUserModel;
+        }
     }
 }

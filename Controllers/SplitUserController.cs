@@ -68,5 +68,18 @@ namespace split_api.Controllers
 
             return CreatedAtAction(nameof(GetById), new { id = userModel.Id }, userModel.ToSplitUserDto());
         }
+
+
+        /*
+            DELETE REQUEST
+        */
+        [HttpDelete("DeleteById/{id}")]
+        public async Task<IActionResult> Delete([FromRoute] int id)
+        {
+            var splitUserModel = await _splitUserRepo.DeleteAsync(id);
+            if (splitUserModel is null) return NotFound();
+
+            return NoContent();
+        }
     }
 }
