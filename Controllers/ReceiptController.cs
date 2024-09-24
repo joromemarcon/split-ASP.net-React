@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using split_api.DTO.Receipt;
 using split_api.Interfaces;
 using split_api.Mappers;
 
@@ -34,7 +35,7 @@ namespace split_api.Controllers
         }
 
         /*
-            GET REQUEST
+            GET REQUEST BY ID
         */
 
         [HttpGet("GetReceiptById/{id}")]
@@ -46,12 +47,28 @@ namespace split_api.Controllers
             return Ok(receipt);
         }
 
+        /*
+            GET REQUEST BY TRANSACTION NUMBER
+        */
         [HttpGet("GetReceiptByTransactionNumber/{tNumber}")]
         public async Task<IActionResult> GetByTransactionNumberAsync([FromRoute] string tNumber)
         {
             var receipt = await _receiptRepo.GetReceiptByTransactionNumberAsync(tNumber);
             if (receipt is null) return NotFound();
             return Ok(receipt);
+        }
+
+
+        /*
+            POST REQUEST
+        */
+        [HttpPost]
+        public async Task<IActionResult> CreateReceipt([FromBody] CreateReceiptDto receiptDto)
+        {
+            var receiptModel = receiptDto.ToReceiptFromCreateReceiptDto();
+            await _receiptRepo.CreateReceiptAsync(receiptModel);
+
+            return CreatedAtAction(nameof(GetById), new { id = receiptModel.Id }, receiptModel.ToReceiptDto());
         }
     }
 }

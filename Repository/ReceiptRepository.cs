@@ -18,6 +18,14 @@ namespace split_api.Repository
             _context = context;
         }
 
+        public async Task<Receipt> CreateReceiptAsync(Receipt receiptModel)
+        {
+            await _context.Receipts.AddAsync(receiptModel);
+            await _context.SaveChangesAsync();
+
+            return receiptModel;
+        }
+
         public async Task<List<Receipt>> GetAllReceiptAsync()
         {
             return await _context.Receipts.ToListAsync();

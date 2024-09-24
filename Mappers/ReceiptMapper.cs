@@ -20,5 +20,19 @@ namespace split_api.Mappers
                 TransactionDateTime = receiptModel.TransactionDateTime,
             };
         }
+
+        public static Receipt ToReceiptFromCreateReceiptDto(this CreateReceiptDto receiptDto)
+        {
+            return new Receipt
+            {
+                ReceiptCode = receiptDto.ReceiptCode,
+                TransactionNumber = receiptDto.TransactionNumber,
+                EstablishmentName = receiptDto.EstablishmentName,
+                TransactionDateTime = receiptDto.TransactionDateTime,
+                TransactionTotal = receiptDto.TransactionTotal,
+                TransactionTax = receiptDto.TransactionTax,
+                TransactionTip = receiptDto.TransactionTip
+            };
+        }
     }
 }
