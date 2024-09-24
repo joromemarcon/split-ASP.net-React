@@ -26,6 +26,17 @@ namespace split_api.Repository
             return receiptModel;
         }
 
+        public async Task<Receipt?> DeleteReceiptAsync(int id)
+        {
+            var receiptModel = await _context.Receipts.FirstOrDefaultAsync(r => r.Id == id);
+            if (receiptModel is null) return null;
+
+            _context.Receipts.Remove(receiptModel);
+            await _context.SaveChangesAsync();
+
+            return receiptModel;
+        }
+
         public async Task<List<Receipt>> GetAllReceiptAsync()
         {
             return await _context.Receipts.ToListAsync();
