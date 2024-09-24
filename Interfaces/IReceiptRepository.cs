@@ -10,5 +10,6 @@ namespace split_api.Interfaces
     {
         Task<List<Receipt>> GetAllReceiptAsync();
         Task<Receipt?> GetReceiptByIdAsync(int id);
+        Task<Receipt?> GetReceiptByTransactionNumberAsync(string tNumber);
     }
 }

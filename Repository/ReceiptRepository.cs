@@ -27,5 +27,10 @@ namespace split_api.Repository
         {
             return await _context.Receipts.FindAsync(id);
         }
+
+        public async Task<Receipt?> GetReceiptByTransactionNumberAsync(string tNumber)
+        {
+            return await _context.Receipts.FirstOrDefaultAsync(r => r.TransactionNumber == tNumber);
+        }
     }
 }

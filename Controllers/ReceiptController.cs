@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -42,6 +43,14 @@ namespace split_api.Controllers
             var receipt = await _receiptRepo.GetReceiptByIdAsync(id);
             if (receipt is null) return NotFound();
 
+            return Ok(receipt);
+        }
+
+        [HttpGet("GetReceiptByTransactionNumber/{tNumber}")]
+        public async Task<IActionResult> GetByTransactionNumberAsync([FromRoute] string tNumber)
+        {
+            var receipt = await _receiptRepo.GetReceiptByTransactionNumberAsync(tNumber);
+            if (receipt is null) return NotFound();
             return Ok(receipt);
         }
     }
