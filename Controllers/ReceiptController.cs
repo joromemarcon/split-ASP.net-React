@@ -71,6 +71,17 @@ namespace split_api.Controllers
             return CreatedAtAction(nameof(GetById), new { id = receiptModel.Id }, receiptModel.ToReceiptDto());
         }
 
+        /*
+            UPDATE REQUEST
+        */
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateReceipt([FromRoute] int id, [FromBody] UpdateReceiptDto updateReceiptDto)
+        {
+            var receiptModel = await _receiptRepo.UpdateReceiptAsync(id, updateReceiptDto);
+            if (receiptModel is null) return NotFound();
+            return NoContent();
+        }
+
 
         /*
             DELETE REQUEST
