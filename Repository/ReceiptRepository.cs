@@ -4,6 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using split_api.Data;
+using split_api.DTO.Receipt;
+using split_api.DTO.SplitUser;
 using split_api.Interfaces;
 using split_api.Models;
 
@@ -50,6 +52,24 @@ namespace split_api.Repository
         public async Task<Receipt?> GetReceiptByTransactionNumberAsync(string tNumber)
         {
             return await _context.Receipts.FirstOrDefaultAsync(r => r.TransactionNumber == tNumber);
+        }
+
+        public async Task<Receipt?> UpdateReceiptAsync(int id, UpdateReceiptDto updateReceiptDto)
+        {
+            var existingReceipt = await _context.Receipts.FirstOrDefaultAsync(r => r.Id == id);
+            if (existingReceipt is null) return null;
+
+            existingReceipt.ReceiptCode = updateReceiptDto.ReceiptCode;
+            existingReceipt.TransactionNumber = updateReceiptDto.TransactionNumber;
+            existingReceipt.EstablishmentName = updateReceiptDto.EstablishmentName;
+            existingReceipt.TransactionDateTime = updateReceiptDto.TransactionDateTime;
+            existingReceipt.TransactionTotal = updateReceiptDto.TransactionTotal;
+            existingReceipt.TransactionTax = updateReceiptDto.TransactionTax;
+            existingReceipt.TransactionTip = updateReceiptDto.TransactionTip;
+
+            await _context.SaveChangesAsync();
+
+            return existingReceipt;
         }
     }
 }
