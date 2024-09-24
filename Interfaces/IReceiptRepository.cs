@@ -12,5 +12,6 @@ namespace split_api.Interfaces
         Task<Receipt?> GetReceiptByIdAsync(int id);
         Task<Receipt?> GetReceiptByTransactionNumberAsync(string tNumber);
         Task<Receipt> CreateReceiptAsync(Receipt receiptModel);
+        Task<Receipt?> DeleteReceiptAsync(int id);
     }
 }

@@ -70,5 +70,17 @@ namespace split_api.Controllers
 
             return CreatedAtAction(nameof(GetById), new { id = receiptModel.Id }, receiptModel.ToReceiptDto());
         }
+
+
+        /*
+            DELETE REQUEST
+        */
+        [HttpDelete("DeleteReceiptById/{id}")]
+        public async Task<IActionResult> DeleteReceipt([FromRoute] int id)
+        {
+            var receiptModel = await _receiptRepo.DeleteReceiptAsync(id);
+            if (receiptModel is null) return NotFound();
+            return NoContent();
+        }
     }
 }
