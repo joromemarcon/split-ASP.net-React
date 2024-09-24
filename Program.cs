@@ -17,6 +17,7 @@ builder.Services.AddDbContext<DataContext>(options =>
 });
 
 builder.Services.AddScoped<ISplitUserRepository, SplitUserRepository>();
+builder.Services.AddScoped<IReceiptRepository, ReceiptRepository>();
 
 
 var app = builder.Build();
