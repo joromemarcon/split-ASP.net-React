@@ -12,6 +12,7 @@ using split_api.Models;
 namespace split_api.Controllers
 {
     [Route("split-api/SplitUser")]
+    [ApiController]
     public class SplitUserController : ControllerBase
     {
         private readonly ISplitUserRepository _splitUserRepo;
