@@ -38,5 +38,13 @@ namespace split_api.Controllers
 
             return Ok(item);
         }
+
+        [HttpGet("ByReceiptId/{itemName}/{receiptId}")]
+        public async Task<IActionResult> GetByReceiptId([FromRoute] int receiptId, string itemName)
+        {
+            var item = await _itemRepo.GetItemByReceiptIdAsync(receiptId, itemName);
+            if (item is null) return NotFound();
+            return Ok(item);
+        }
     }
 }

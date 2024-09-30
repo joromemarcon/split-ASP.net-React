@@ -26,5 +26,10 @@ namespace split_api.Repository
         {
             return await _context.Items.FindAsync(id);
         }
+
+        public async Task<Item?> GetItemByReceiptIdAsync(int receiptId, string itemName)
+        {
+            return await _context.Items.FirstOrDefaultAsync(i => i.ReceiptId == receiptId && i.ItemName == itemName);
+        }
     }
 }
