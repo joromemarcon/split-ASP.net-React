@@ -61,7 +61,25 @@ namespace split_api.Controllers
             var itemModel = itemDto.ToItemFromCreateItem(receiptId);
             await _itemRepo.CreateItemAsync(itemModel);
 
-            return CreatedAtAction(nameof(GetItemById), new { id = itemModel }, itemModel.ToItemDto());
+            return CreatedAtAction(nameof(GetItemById), new { id = itemModel.Id }, itemModel.ToItemDto());
+        }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateItem([FromRoute] int id, [FromBody] UpdateItemRequestDto updateDto)
+        {
+            var item = await _itemRepo.UpdateItemAsync(id, updateDto.ToItemFromUpdateItem());
+            if (item is null) return NotFound("Item Not Found!");
+
+            return Ok(item.ToItemDto());
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteItem([FromRoute] int id)
+        {
+            var itemModel = await _itemRepo.DeleteItemAsync(id);
+            if (itemModel is null) return NotFound();
+
+            return NoContent();
         }
     }
 }

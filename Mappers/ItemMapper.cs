@@ -26,7 +26,17 @@ namespace split_api.Mappers
             {
                 ItemName = itemDto.ItemName,
                 ItemPrice = itemDto.ItemPrice,
-                ReceiptId = receiptId
+                ReceiptId = receiptId,
+                PaidCustomerId = -1
+            };
+        }
+
+        public static Item ToItemFromUpdateItem(this UpdateItemRequestDto itemDto)
+        {
+            return new Item
+            {
+                ItemName = itemDto.ItemName,
+                ItemPrice = itemDto.ItemPrice
             };
         }
     }
