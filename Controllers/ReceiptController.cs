@@ -44,7 +44,7 @@ namespace split_api.Controllers
             var receipt = await _receiptRepo.GetReceiptByIdAsync(id);
             if (receipt is null) return NotFound();
 
-            return Ok(receipt);
+            return Ok(receipt.ToReceiptDto());
         }
 
         /*
@@ -55,7 +55,7 @@ namespace split_api.Controllers
         {
             var receipt = await _receiptRepo.GetReceiptByTransactionNumberAsync(tNumber);
             if (receipt is null) return NotFound();
-            return Ok(receipt);
+            return Ok(receipt.ToReceiptDto());
         }
 
 

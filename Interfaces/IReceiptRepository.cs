@@ -16,5 +16,7 @@ namespace split_api.Interfaces
         Task<Receipt> CreateReceiptAsync(Receipt receiptModel);
         Task<Receipt?> DeleteReceiptAsync(int id);
         Task<Receipt?> UpdateReceiptAsync(int id, UpdateReceiptDto updateReceiptDto);
+
+        Task<bool> receiptExists(int id);
     }
 }

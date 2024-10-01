@@ -16,5 +16,7 @@ namespace split_api.Models
         public decimal TransactionTax { get; set; }
         public decimal TransactionTip { get; set; }
 
+        public List<Item> Items { get; set; } = new List<Item>();
+
     }
 }

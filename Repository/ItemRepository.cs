@@ -17,6 +17,14 @@ namespace split_api.Repository
             _context = context;
         }
 
+        public async Task<Item> CreateItemAsync(Item itemModel)
+        {
+            await _context.Items.AddAsync(itemModel);
+            await _context.SaveChangesAsync();
+
+            return itemModel;
+        }
+
         public async Task<List<Item>> GetAllItemAsync()
         {
             return await _context.Items.ToListAsync();

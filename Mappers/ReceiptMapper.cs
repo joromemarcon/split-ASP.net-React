@@ -18,6 +18,7 @@ namespace split_api.Mappers
                 TransactionNumber = receiptModel.TransactionNumber,
                 EstablishmentName = receiptModel.EstablishmentName,
                 TransactionDateTime = receiptModel.TransactionDateTime,
+                Items = receiptModel.Items.Select(i => i.ToItemDto()).ToList()
             };
         }
 

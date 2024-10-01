@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using split_api.DTO.Item;
 using split_api.Interfaces;
 using split_api.Mappers;
 
@@ -14,17 +15,19 @@ namespace split_api.Controllers
     public class ItemController : ControllerBase
     {
         private readonly IItemRepository _itemRepo;
+        private readonly IReceiptRepository _receiptRepo;
 
-        public ItemController(IItemRepository itemRepo)
+        public ItemController(IItemRepository itemRepo, IReceiptRepository receiptRepo)
         {
             _itemRepo = itemRepo;
+            _receiptRepo = receiptRepo;
         }
 
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
             var items = await _itemRepo.GetAllItemAsync();
-            var itemsDto = items.Select(i => i.ToItemtDto());
+            var itemsDto = items.Select(i => i.ToItemDto());
 
             return Ok(itemsDto);
         }
@@ -45,6 +48,20 @@ namespace split_api.Controllers
             var item = await _itemRepo.GetItemByReceiptIdAsync(receiptId, itemName);
             if (item is null) return NotFound();
             return Ok(item);
+        }
+
+        [HttpPost("{receiptId}")]
+        public async Task<IActionResult> CreateItem([FromRoute] int receiptId, CreateItemDto itemDto)
+        {
+            if (!await _receiptRepo.receiptExists(receiptId))
+            {
+                return BadRequest("Receipt Does Not Exist!");
+            }
+
+            var itemModel = itemDto.ToItemFromCreateItem(receiptId);
+            await _itemRepo.CreateItemAsync(itemModel);
+
+            return CreatedAtAction(nameof(GetItemById), new { id = itemModel }, itemModel.ToItemDto());
         }
     }
 }
