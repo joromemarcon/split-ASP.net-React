@@ -12,5 +12,7 @@ namespace split_api.Interfaces
         Task<Item?> GetItemByIdAsync(int id);
         Task<Item?> GetItemByReceiptIdAsync(int receiptId, string itemName);
         Task<Item> CreateItemAsync(Item itemModel);
+        Task<Item?> UpdateItemAsync(int id, Item itemModel);
+        Task<Item?> DeleteItemAsync(int id);
     }
 }
