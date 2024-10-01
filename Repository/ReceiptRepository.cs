@@ -41,17 +41,22 @@ namespace split_api.Repository
 
         public async Task<List<Receipt>> GetAllReceiptAsync()
         {
-            return await _context.Receipts.ToListAsync();
+            return await _context.Receipts.Include(i => i.Items).ToListAsync();
         }
 
         public async Task<Receipt?> GetReceiptByIdAsync(int id)
         {
-            return await _context.Receipts.FindAsync(id);
+            return await _context.Receipts.Include(i => i.Items).FirstOrDefaultAsync(i => i.Id == id);
         }
 
         public async Task<Receipt?> GetReceiptByTransactionNumberAsync(string tNumber)
         {
-            return await _context.Receipts.FirstOrDefaultAsync(r => r.TransactionNumber == tNumber);
+            return await _context.Receipts.Include(i => i.Items).FirstOrDefaultAsync(r => r.TransactionNumber == tNumber);
+        }
+
+        public Task<bool> receiptExists(int id)
+        {
+            return _context.Receipts.AnyAsync(r => r.Id == id);
         }
 
         public async Task<Receipt?> UpdateReceiptAsync(int id, UpdateReceiptDto updateReceiptDto)

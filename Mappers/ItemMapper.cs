@@ -9,13 +9,24 @@ namespace split_api.Mappers
 {
     public static class ItemMapper
     {
-        public static ItemDto ToItemtDto(this Item itemModel)
+        public static ItemDto ToItemDto(this Item itemModel)
         {
             return new ItemDto
             {
                 Id = itemModel.Id,
                 ItemName = itemModel.ItemName,
-                ItemPrice = itemModel.ItemPrice
+                ItemPrice = itemModel.ItemPrice,
+                ReceiptId = itemModel.ReceiptId
+            };
+        }
+
+        public static Item ToItemFromCreateItem(this CreateItemDto itemDto, int receiptId)
+        {
+            return new Item
+            {
+                ItemName = itemDto.ItemName,
+                ItemPrice = itemDto.ItemPrice,
+                ReceiptId = receiptId
             };
         }
     }
