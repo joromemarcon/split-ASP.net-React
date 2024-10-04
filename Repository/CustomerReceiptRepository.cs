@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 using Microsoft.EntityFrameworkCore;
 using split_api.Data;
 using split_api.Interfaces;
@@ -19,6 +20,11 @@ namespace split_api.Repository
         public async Task<List<CustomerReceipt>> GetAllCRAsync()
         {
             return await _context.CustomerReceipts.ToListAsync();
+        }
+
+        public async Task<CustomerReceipt?> GetCustomerReceiptByIdAsync(int id)
+        {
+            return await _context.CustomerReceipts.FindAsync(id);
         }
     }
 
