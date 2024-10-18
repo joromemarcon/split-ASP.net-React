@@ -22,5 +22,16 @@ namespace split_api.Mappers
 
             };
         }
+
+        public static CustomerReceipt ToCrFromCreateCr(this CreateCustomerReceiptDto customerReceiptModel, int userId, int receiptId)
+        {
+            return new CustomerReceipt
+            {
+                UserId = userId,
+                ReceiptId = receiptId,
+                isOwner = customerReceiptModel.isOwner,
+                IsPaid = customerReceiptModel.IsPaid
+            };
+        }
     }
 }
