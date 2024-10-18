@@ -66,5 +66,10 @@ namespace split_api.Repository
 
             return existingSplitUser;
         }
+
+        public Task<bool> userExist(int id)
+        {
+            return _context.SplitUsers.AnyAsync(u => u.Id == id);
+        }
     }
 }

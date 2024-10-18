@@ -11,5 +11,6 @@ namespace split_api.Interfaces
         Task<List<CustomerReceipt>> GetAllCRAsync();
         Task<CustomerReceipt?> GetCustomerReceiptByIdAsync(int id);
         Task<CustomerReceipt?> GetReceiptIdByReceiptIdAsync(int userId, int receiptId);
+        Task<CustomerReceipt?> CreateCustomerReceiptAsync(CustomerReceipt customerReceipt);
     }
 }
