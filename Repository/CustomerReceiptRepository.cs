@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Xml.Linq;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
 using split_api.Data;
 using split_api.Interfaces;
@@ -24,6 +25,17 @@ namespace split_api.Repository
             await _context.SaveChangesAsync();
 
             return customerReceipt;
+        }
+
+        public async Task<CustomerReceipt?> DeleteCustomerReceiptByIdAsync(int id)
+        {
+            var customerReceiptModel = await _context.CustomerReceipts.FirstOrDefaultAsync(c => c.Id == id);
+            if (customerReceiptModel is null) return null;
+
+            _context.CustomerReceipts.Remove(customerReceiptModel);
+            await _context.SaveChangesAsync();
+
+            return customerReceiptModel;
         }
 
         public async Task<List<CustomerReceipt>> GetAllCRAsync()
