@@ -33,5 +33,14 @@ namespace split_api.Mappers
                 IsPaid = customerReceiptModel.IsPaid
             };
         }
+
+        public static CustomerReceipt ToCrFromUpdateCr(this UpdateCustomerReceiptDto customerReceiptDto)
+        {
+            return new CustomerReceipt
+            {
+                isOwner = customerReceiptDto.isOwner,
+                IsPaid = customerReceiptDto.IsPaid
+            };
+        }
     }
 }
