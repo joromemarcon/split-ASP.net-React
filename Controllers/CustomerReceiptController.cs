@@ -73,5 +73,15 @@ namespace split_api.Controllers
 
             return Ok(customerReceipt.ToCustomerReceiptDto());
         }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteCustomerReceipt([FromRoute] int id)
+        {
+            var customerReceipt = await _customerReceiptRepo.DeleteCustomerReceiptByIdAsync(id);
+            if (customerReceipt is null) return NotFound();
+
+            return NoContent();
+        }
+
     }
 }
