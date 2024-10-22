@@ -40,6 +40,19 @@ namespace split_api.Repository
         {
             return await _context.CustomerReceipts.FirstOrDefaultAsync(c => c.UserId == userId && c.ReceiptId == receiptId);
         }
+
+        public async Task<CustomerReceipt?> UpdateCustomerReceiptAsync(int id, CustomerReceipt customerReceiptModel)
+        {
+            var existingCustomerReceipt = await _context.CustomerReceipts.FindAsync(id);
+            if (existingCustomerReceipt is null) return null;
+
+            existingCustomerReceipt.isOwner = customerReceiptModel.isOwner;
+            existingCustomerReceipt.IsPaid = customerReceiptModel.IsPaid;
+
+            await _context.SaveChangesAsync();
+
+            return existingCustomerReceipt;
+        }
     }
 
 }
