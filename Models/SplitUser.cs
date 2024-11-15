@@ -11,5 +11,9 @@ namespace split_api.Models
         public string FullName { get; set; } = string.Empty;
         public string PhoneNumber { get; set; } = string.Empty;
 
+        /****************************************************************
+            Navigation Property: many-to-many (Customer and Receipt)
+        ****************************************************************/
+        public List<CustomerReceipt> CustomerReceipt { get; set; } = new List<CustomerReceipt>();
     }
 }

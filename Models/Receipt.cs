@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace split_api.Models
@@ -16,7 +17,13 @@ namespace split_api.Models
         public decimal TransactionTax { get; set; }
         public decimal TransactionTip { get; set; }
 
-        public List<Item> Items { get; set; } = new List<Item>();
+        /****************************************************************
+            Navigation Properties:
 
+            List<Item> Items - One-to-Many (Receipt and Items)
+            List<CustomerReceipt> CustomerReceipt - many-to-many (Customer and Receipt)
+        ****************************************************************/
+        public List<Item> Items { get; set; } = new List<Item>();
+        public List<CustomerReceipt> CustomerReceipt { get; set; } = new List<CustomerReceipt>();
     }
 }

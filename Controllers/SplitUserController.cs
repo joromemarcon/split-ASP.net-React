@@ -37,7 +37,7 @@ namespace split_api.Controllers
             GET BY ID
         */
 
-        [HttpGet("GetById/{id}")]
+        [HttpGet("{id}")]
         public async Task<IActionResult> GetById([FromRoute] int id)
         {
             var user = await _splitUserRepo.GetByIdAsync(id);
