@@ -15,6 +15,6 @@ namespace split_api.Interfaces
         Task<SplitUser?> GetByName(string name);
         Task<SplitUser?> DeleteAsync(int id);
         Task<SplitUser?> UpdateAsync(int id, UpdateUserDto updateUserDto);
-        Task<bool> userExist(int id);
+        Task<bool> UserExist(int id);
     }
 }
