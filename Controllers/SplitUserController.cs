@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using split_api.Data;
 using split_api.DTO.SplitUser;
+using split_api.Helpers;
 using split_api.Interfaces;
 using split_api.Mappers;
 using split_api.Models;
@@ -25,9 +26,9 @@ namespace split_api.Controllers
             GET REQUEST
         */
         [HttpGet]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> GetAll([FromQuery] QueryObject query)
         {
-            var users = await _splitUserRepo.GetAllAsync();
+            var users = await _splitUserRepo.GetAllAsync(query);
             var usersDto = users.Select(s => s.ToSplitUserDto());
 
             return Ok(usersDto);
@@ -41,18 +42,6 @@ namespace split_api.Controllers
         public async Task<IActionResult> GetById([FromRoute] int id)
         {
             var user = await _splitUserRepo.GetByIdAsync(id);
-            if (user is null) return NotFound();
-
-            return Ok(user);
-        }
-
-        /*
-            GET by Name
-        */
-        [HttpGet("GetByName/{name}")]
-        public async Task<IActionResult> GetByName(string name)
-        {
-            var user = await _splitUserRepo.GetByName(name);
             if (user is null) return NotFound();
 
             return Ok(user);

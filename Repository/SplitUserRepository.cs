@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
 using split_api.Data;
 using split_api.DTO.SplitUser;
+using split_api.Helpers;
 using split_api.Interfaces;
 using split_api.Models;
 
@@ -28,19 +29,21 @@ namespace split_api.Repository
             return userModel;
         }
 
-        public async Task<List<SplitUser>> GetAllAsync()
+        public async Task<List<SplitUser>> GetAllAsync(QueryObject query)
         {
-            return await _context.SplitUsers.ToListAsync();
+            var user = _context.SplitUsers.AsQueryable();
+
+            if (!string.IsNullOrWhiteSpace(query.FullName) && !string.IsNullOrEmpty(query.PhoneNumber))
+            {
+                user = user.Where(u => u.FullName.Contains(query.FullName) && u.PhoneNumber.Equals(query.PhoneNumber));
+            }
+
+            return await user.ToListAsync();
         }
 
         public async Task<SplitUser?> GetByIdAsync(int id)
         {
             return await _context.SplitUsers.FindAsync(id);
-        }
-
-        public async Task<SplitUser?> GetByName(string name)
-        {
-            return await _context.SplitUsers.FirstOrDefaultAsync(u => u.FullName == name);
         }
 
         public async Task<SplitUser?> DeleteAsync(int id)
