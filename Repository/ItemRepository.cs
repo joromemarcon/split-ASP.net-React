@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
 using split_api.Data;
+using split_api.Helpers;
 using split_api.Interfaces;
 using split_api.Models;
 
@@ -38,9 +39,15 @@ namespace split_api.Repository
             return itemModel;
         }
 
-        public async Task<List<Item>> GetAllItemAsync()
+        public async Task<List<Item>> GetAllItemAsync(ItemQueryObject query)
         {
-            return await _context.Items.ToListAsync();
+            var items = _context.Items.AsQueryable();
+            if (!string.IsNullOrEmpty(query.ItemName) && query.ReceiptId != null)
+            {
+                items = items.Where(t => t.ItemName.Equals(query.ItemName)
+                && t.ReceiptId.Equals(query.ReceiptId));
+            }
+            return await items.ToListAsync();
         }
 
         public async Task<Item?> GetItemByIdAsync(int id)
@@ -48,10 +55,10 @@ namespace split_api.Repository
             return await _context.Items.FindAsync(id);
         }
 
-        public async Task<Item?> GetItemByReceiptIdAsync(int receiptId, string itemName)
-        {
-            return await _context.Items.FirstOrDefaultAsync(i => i.ReceiptId == receiptId && i.ItemName == itemName);
-        }
+        // public async Task<Item?> GetItemByReceiptIdAsync(int receiptId, string itemName)
+        // {
+        //     return await _context.Items.FirstOrDefaultAsync(i => i.ReceiptId == receiptId && i.ItemName == itemName);
+        // }
 
         public async Task<Item?> UpdateItemAsync(int id, Item itemModel)
         {

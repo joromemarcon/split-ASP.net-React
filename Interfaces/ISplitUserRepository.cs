@@ -10,7 +10,7 @@ namespace split_api.Interfaces
 {
     public interface ISplitUserRepository
     {
-        Task<List<SplitUser>> GetAllAsync(QueryObject query);
+        Task<List<SplitUser>> GetAllAsync(UserQueryObject query);
         Task<SplitUser?> GetByIdAsync(int id);
         Task<SplitUser> CreateAsync(SplitUser userModel);
         Task<SplitUser?> DeleteAsync(int id);

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using split_api.DTO.Item;
+using split_api.Helpers;
 using split_api.Interfaces;
 using split_api.Mappers;
 
@@ -24,9 +25,9 @@ namespace split_api.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> GetAll([FromQuery] ItemQueryObject query)
         {
-            var items = await _itemRepo.GetAllItemAsync();
+            var items = await _itemRepo.GetAllItemAsync(query);
             var itemsDto = items.Select(i => i.ToItemDto());
 
             return Ok(itemsDto);
@@ -42,13 +43,13 @@ namespace split_api.Controllers
             return Ok(item);
         }
 
-        [HttpGet("ByReceiptId/{itemName}/{receiptId}")]
-        public async Task<IActionResult> GetByReceiptId([FromRoute] int receiptId, string itemName)
-        {
-            var item = await _itemRepo.GetItemByReceiptIdAsync(receiptId, itemName);
-            if (item is null) return NotFound();
-            return Ok(item);
-        }
+        // [HttpGet("ByReceiptId/{itemName}/{receiptId}")]
+        // public async Task<IActionResult> GetByReceiptId([FromRoute] int receiptId, string itemName)
+        // {
+        //     var item = await _itemRepo.GetItemyReceiptIdAsync(receiptId, itemName);
+        //     if (item is null) return NotFound();
+        //     return Ok(item);
+        // }
 
         [HttpPost("{receiptId}")]
         public async Task<IActionResult> CreateItem([FromRoute] int receiptId, CreateItemDto itemDto)

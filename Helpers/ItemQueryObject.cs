@@ -5,9 +5,9 @@ using System.Threading.Tasks;
 
 namespace split_api.Helpers
 {
-    public class QueryObject
+    public class ItemQueryObject
     {
-        public string? FullName { get; set; } = null;
-        public string? PhoneNumber { get; set; } = null;
+        public int? ReceiptId { get; set; } = null;
+        public string? ItemName { get; set; } = null;
     }
 }

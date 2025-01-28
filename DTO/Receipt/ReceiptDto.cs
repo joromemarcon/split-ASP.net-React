@@ -13,6 +13,6 @@ namespace split_api.DTO.Receipt
         public string TransactionNumber { get; set; } = string.Empty;
         public string EstablishmentName { get; set; } = string.Empty;
         public string TransactionDateTime { get; set; } = string.Empty;
-        public List<ItemDto> Items { get; set; }
+        public List<ItemDto>? Items { get; set; }
     }
 }
