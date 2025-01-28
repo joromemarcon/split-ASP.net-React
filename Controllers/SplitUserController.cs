@@ -12,7 +12,7 @@ using split_api.Models;
 
 namespace split_api.Controllers
 {
-    [Route("split-api/SplitUser")]
+    [Route("SplitUser")]
     [ApiController]
     public class SplitUserController : ControllerBase
     {
@@ -26,7 +26,7 @@ namespace split_api.Controllers
             GET REQUEST
         */
         [HttpGet]
-        public async Task<IActionResult> GetAll([FromQuery] QueryObject query)
+        public async Task<IActionResult> GetAll([FromQuery] UserQueryObject query)
         {
             var users = await _splitUserRepo.GetAllAsync(query);
             var usersDto = users.Select(s => s.ToSplitUserDto());

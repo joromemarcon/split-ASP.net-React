@@ -6,6 +6,7 @@ using System.Xml.Linq;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
 using split_api.Data;
+using split_api.Helpers;
 using split_api.Interfaces;
 using split_api.Models;
 
@@ -38,19 +39,20 @@ namespace split_api.Repository
             return customerReceiptModel;
         }
 
-        public async Task<List<CustomerReceipt>> GetAllCRAsync()
+        public async Task<List<CustomerReceipt>> GetAllCRAsync(CustomerReceiptQueryObject query)
         {
-            return await _context.CustomerReceipts.ToListAsync();
+            var customerReceipt = _context.CustomerReceipts.AsQueryable();
+            if (query.ReceiptId != null && query.UserId != null)
+            {
+                customerReceipt = customerReceipt.Where(r => r.ReceiptId.Equals(query.ReceiptId) ||
+                                        r.UserId.Equals(query.UserId));
+            }
+            return await customerReceipt.ToListAsync();
         }
 
         public async Task<CustomerReceipt?> GetCustomerReceiptByIdAsync(int id)
         {
             return await _context.CustomerReceipts.FindAsync(id);
-        }
-
-        public async Task<CustomerReceipt?> GetReceiptIdByReceiptIdAsync(int userId, int receiptId)
-        {
-            return await _context.CustomerReceipts.FirstOrDefaultAsync(c => c.UserId == userId && c.ReceiptId == receiptId);
         }
 
         public async Task<CustomerReceipt?> UpdateCustomerReceiptAsync(int id, CustomerReceipt customerReceiptModel)

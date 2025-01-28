@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using split_api.DTO.CustomerReceipt;
+using split_api.Helpers;
 using split_api.Interfaces;
 using split_api.Mappers;
 
@@ -25,9 +26,9 @@ namespace split_api.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllCR()
+        public async Task<IActionResult> GetAllCR([FromQuery] CustomerReceiptQueryObject query)
         {
-            var customerReceipt = await _customerReceiptRepo.GetAllCRAsync();
+            var customerReceipt = await _customerReceiptRepo.GetAllCRAsync(query);
             var customerReceiptDto = customerReceipt.Select(c => c.ToCustomerReceiptDto());
 
             return Ok(customerReceiptDto);
@@ -38,15 +39,6 @@ namespace split_api.Controllers
         public async Task<IActionResult> GetCustomerReceiptById([FromRoute] int id)
         {
             var customerReceipt = await _customerReceiptRepo.GetCustomerReceiptByIdAsync(id);
-            if (customerReceipt is null) return NotFound();
-
-            return Ok(customerReceipt);
-        }
-
-        [HttpGet("{userId}/{receiptId}")]
-        public async Task<IActionResult> GetReceiptIdByCustomerId([FromRoute] int userId, int receiptId)
-        {
-            var customerReceipt = await _customerReceiptRepo.GetReceiptIdByReceiptIdAsync(userId, receiptId);
             if (customerReceipt is null) return NotFound();
 
             return Ok(customerReceipt);

@@ -29,7 +29,7 @@ namespace split_api.Repository
             return userModel;
         }
 
-        public async Task<List<SplitUser>> GetAllAsync(QueryObject query)
+        public async Task<List<SplitUser>> GetAllAsync(UserQueryObject query)
         {
             var user = _context.SplitUsers.AsQueryable();
 

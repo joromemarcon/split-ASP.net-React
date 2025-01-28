@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using split_api.Data;
 using split_api.DTO.Receipt;
 using split_api.DTO.SplitUser;
+using split_api.Helpers;
 using split_api.Interfaces;
 using split_api.Models;
 
@@ -39,19 +40,22 @@ namespace split_api.Repository
             return receiptModel;
         }
 
-        public async Task<List<Receipt>> GetAllReceiptAsync()
+        public async Task<List<Receipt>> GetAllReceiptAsync(ReceiptQueryObject query)
         {
-            return await _context.Receipts.Include(i => i.Items).ToListAsync();
+            var receipt = _context.Receipts.AsQueryable();
+
+            if (!string.IsNullOrEmpty(query.ReceiptCode) || !string.IsNullOrEmpty(query.TransactionNumber))
+            {
+                receipt = receipt.Where(r => r.ReceiptCode.Equals(query.ReceiptCode) ||
+                                        r.TransactionNumber.Equals(query.TransactionNumber));
+            }
+
+            return await receipt.Include(i => i.Items).ToListAsync();
         }
 
         public async Task<Receipt?> GetReceiptByIdAsync(int id)
         {
             return await _context.Receipts.Include(i => i.Items).FirstOrDefaultAsync(i => i.Id == id);
-        }
-
-        public async Task<Receipt?> GetReceiptByTransactionNumberAsync(string tNumber)
-        {
-            return await _context.Receipts.Include(i => i.Items).FirstOrDefaultAsync(r => r.TransactionNumber == tNumber);
         }
 
         public Task<bool> receiptExists(int id)

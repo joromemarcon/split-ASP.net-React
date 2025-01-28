@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using split_api.DTO.Receipt;
+using split_api.Helpers;
 using split_api.Interfaces;
 using split_api.Mappers;
 
@@ -26,9 +27,9 @@ namespace split_api.Controllers
             GET REQUEST
         */
         [HttpGet]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> GetAll([FromQuery] ReceiptQueryObject query)
         {
-            var receipt = await _receiptRepo.GetAllReceiptAsync();
+            var receipt = await _receiptRepo.GetAllReceiptAsync(query);
             var receiptDto = receipt.Select(r => r.ToReceiptDto());
 
             return Ok(receiptDto);
@@ -38,23 +39,12 @@ namespace split_api.Controllers
             GET REQUEST BY ID
         */
 
-        [HttpGet("GetReceiptById/{id}")]
+        [HttpGet("{id}")]
         public async Task<IActionResult> GetById([FromRoute] int id)
         {
             var receipt = await _receiptRepo.GetReceiptByIdAsync(id);
             if (receipt is null) return NotFound();
 
-            return Ok(receipt.ToReceiptDto());
-        }
-
-        /*
-            GET REQUEST BY TRANSACTION NUMBER
-        */
-        [HttpGet("GetReceiptByTransactionNumber/{tNumber}")]
-        public async Task<IActionResult> GetByTransactionNumberAsync([FromRoute] string tNumber)
-        {
-            var receipt = await _receiptRepo.GetReceiptByTransactionNumberAsync(tNumber);
-            if (receipt is null) return NotFound();
             return Ok(receipt.ToReceiptDto());
         }
 
@@ -86,7 +76,7 @@ namespace split_api.Controllers
         /*
             DELETE REQUEST
         */
-        [HttpDelete("DeleteReceiptById/{id}")]
+        [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteReceipt([FromRoute] int id)
         {
             var receiptModel = await _receiptRepo.DeleteReceiptAsync(id);

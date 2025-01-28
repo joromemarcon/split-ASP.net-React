@@ -136,3 +136,7 @@ C:\Users\jorom\..Personal_Programming\2024\split-api\obj\Debug\net8.0\refint\spl
 C:\Users\jorom\..Personal_Programming\2024\split-api\obj\Debug\net8.0\split-api.pdb
 C:\Users\jorom\..Personal_Programming\2024\split-api\obj\Debug\net8.0\split-api.genruntimeconfig.cache
 C:\Users\jorom\..Personal_Programming\2024\split-api\obj\Debug\net8.0\ref\split-api.dll
+C:\Users\jorom\..Personal_Programming\2024\split-api\bin\Debug\net8.0\Microsoft.AspNetCore.JsonPatch.dll
+C:\Users\jorom\..Personal_Programming\2024\split-api\bin\Debug\net8.0\Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
+C:\Users\jorom\..Personal_Programming\2024\split-api\bin\Debug\net8.0\Newtonsoft.Json.dll
+C:\Users\jorom\..Personal_Programming\2024\split-api\bin\Debug\net8.0\Newtonsoft.Json.Bson.dll
