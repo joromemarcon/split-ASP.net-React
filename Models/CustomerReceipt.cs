@@ -13,7 +13,7 @@ namespace split_api.Models
         Foreign Keys and Navigation Properties
             - Join table elements for User and Receipt m-to-m relationship
         ****************************************************************/
-        public int UserId { get; set; } //Customer Foreign Key
+        public string UserId { get; set; } = string.Empty; //Customer Foreign Key
         public SplitUser? SplitUser { get; set; }
 
         public int ReceiptId { get; set; } //Receipt Foreign Key

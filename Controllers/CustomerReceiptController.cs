@@ -1,79 +1,79 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using split_api.DTO.CustomerReceipt;
-using split_api.Helpers;
-using split_api.Interfaces;
-using split_api.Mappers;
+// using System;
+// using System.Collections.Generic;
+// using System.Linq;
+// using System.Threading.Tasks;
+// using Microsoft.AspNetCore.Mvc;
+// using split_api.DTO.CustomerReceipt;
+// using split_api.Helpers;
+// using split_api.Interfaces;
+// using split_api.Mappers;
 
-namespace split_api.Controllers
-{
-    [Route("CustomerReceipt")]
-    [ApiController]
-    public class CustomerReceiptController : ControllerBase
-    {
-        private readonly ICustomerReceiptRepository _customerReceiptRepo;
-        private readonly IReceiptRepository _receiptRepo;
-        private readonly ISplitUserRepository _userRepository;
+// namespace split_api.Controllers
+// {
+//     [Route("CustomerReceipt")]
+//     [ApiController]
+//     public class CustomerReceiptController : ControllerBase
+//     {
+//         private readonly ICustomerReceiptRepository _customerReceiptRepo;
+//         private readonly IReceiptRepository _receiptRepo;
+//         private readonly ISplitUserRepository _userRepository;
 
-        public CustomerReceiptController(ICustomerReceiptRepository customerReceiptRepo, IReceiptRepository receiptRepo, ISplitUserRepository userRepository)
-        {
-            _customerReceiptRepo = customerReceiptRepo;
-            _receiptRepo = receiptRepo;
-            _userRepository = userRepository;
-        }
+//         public CustomerReceiptController(ICustomerReceiptRepository customerReceiptRepo, IReceiptRepository receiptRepo, ISplitUserRepository userRepository)
+//         {
+//             _customerReceiptRepo = customerReceiptRepo;
+//             _receiptRepo = receiptRepo;
+//             _userRepository = userRepository;
+//         }
 
-        [HttpGet]
-        public async Task<IActionResult> GetAllCR([FromQuery] CustomerReceiptQueryObject query)
-        {
-            var customerReceipt = await _customerReceiptRepo.GetAllCRAsync(query);
-            var customerReceiptDto = customerReceipt.Select(c => c.ToCustomerReceiptDto());
+//         [HttpGet]
+//         public async Task<IActionResult> GetAllCR([FromQuery] CustomerReceiptQueryObject query)
+//         {
+//             var customerReceipt = await _customerReceiptRepo.GetAllCRAsync(query);
+//             var customerReceiptDto = customerReceipt.Select(c => c.ToCustomerReceiptDto());
 
-            return Ok(customerReceiptDto);
+//             return Ok(customerReceiptDto);
 
-        }
+//         }
 
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetCustomerReceiptById([FromRoute] int id)
-        {
-            var customerReceipt = await _customerReceiptRepo.GetCustomerReceiptByIdAsync(id);
-            if (customerReceipt is null) return NotFound();
+//         [HttpGet("{id}")]
+//         public async Task<IActionResult> GetCustomerReceiptById([FromRoute] int id)
+//         {
+//             var customerReceipt = await _customerReceiptRepo.GetCustomerReceiptByIdAsync(id);
+//             if (customerReceipt is null) return NotFound();
 
-            return Ok(customerReceipt);
-        }
+//             return Ok(customerReceipt);
+//         }
 
-        [HttpPost("{userId}/{receiptId}/{isOwner}")]
-        public async Task<IActionResult> CreateCustomerReceipt([FromRoute] int userId, int receiptId, bool isOwner, CreateCustomerReceiptDto customerReceiptDto)
-        {
-            if (!await _userRepository.userExist(userId)) return NotFound("User Does Not Exist!");
-            if (!await _receiptRepo.receiptExists(receiptId)) return NotFound("Receipt Not Found!");
+//         [HttpPost("{userId}/{receiptId}/{isOwner}")]
+//         public async Task<IActionResult> CreateCustomerReceipt([FromRoute] string userId, int receiptId, bool isOwner, CreateCustomerReceiptDto customerReceiptDto)
+//         {
+//             if (!await _userRepository.userExist(userId)) return NotFound("User Does Not Exist!");
+//             if (!await _receiptRepo.receiptExists(receiptId)) return NotFound("Receipt Not Found!");
 
-            var customerReceipt = customerReceiptDto.ToCrFromCreateCr(userId, receiptId, isOwner);
-            await _customerReceiptRepo.CreateCustomerReceiptAsync(customerReceipt);
+//             var customerReceipt = customerReceiptDto.ToCrFromCreateCr(userId, receiptId, isOwner);
+//             await _customerReceiptRepo.CreateCustomerReceiptAsync(customerReceipt);
 
-            return CreatedAtAction(nameof(GetCustomerReceiptById), new { id = customerReceipt.Id }, customerReceipt.ToCustomerReceiptDto());
+//             return CreatedAtAction(nameof(GetCustomerReceiptById), new { id = customerReceipt.Id }, customerReceipt.ToCustomerReceiptDto());
 
-        }
+//         }
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateCustomerReceipt([FromRoute] int id, [FromBody] UpdateCustomerReceiptDto updateDto)
-        {
-            var customerReceipt = await _customerReceiptRepo.UpdateCustomerReceiptAsync(id, updateDto.ToCrFromUpdateCr());
-            if (customerReceipt is null) return NotFound("Customer Receipt not Found!");
+//         [HttpPut("{id}")]
+//         public async Task<IActionResult> UpdateCustomerReceipt([FromRoute] int id, [FromBody] UpdateCustomerReceiptDto updateDto)
+//         {
+//             var customerReceipt = await _customerReceiptRepo.UpdateCustomerReceiptAsync(id, updateDto.ToCrFromUpdateCr());
+//             if (customerReceipt is null) return NotFound("Customer Receipt not Found!");
 
-            return Ok(customerReceipt.ToCustomerReceiptDto());
-        }
+//             return Ok(customerReceipt.ToCustomerReceiptDto());
+//         }
 
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteCustomerReceipt([FromRoute] int id)
-        {
-            var customerReceipt = await _customerReceiptRepo.DeleteCustomerReceiptByIdAsync(id);
-            if (customerReceipt is null) return NotFound();
+//         [HttpDelete("{id}")]
+//         public async Task<IActionResult> DeleteCustomerReceipt([FromRoute] int id)
+//         {
+//             var customerReceipt = await _customerReceiptRepo.DeleteCustomerReceiptByIdAsync(id);
+//             if (customerReceipt is null) return NotFound();
 
-            return NoContent();
-        }
+//             return NoContent();
+//         }
 
-    }
-}
+//     }
+// }

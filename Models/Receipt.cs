@@ -24,6 +24,6 @@ namespace split_api.Models
             List<CustomerReceipt> CustomerReceipt - many-to-many (Customer and Receipt)
         ****************************************************************/
         public List<Item> Items { get; set; } = new List<Item>();
-        public List<CustomerReceipt> CustomerReceipt { get; set; } = new List<CustomerReceipt>();
+        //public List<CustomerReceipt> CustomerReceipt { get; set; } = new List<CustomerReceipt>();
     }
 }

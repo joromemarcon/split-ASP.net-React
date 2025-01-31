@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using split_api.DTO.Receipt;
 using split_api.Helpers;
@@ -27,6 +28,7 @@ namespace split_api.Controllers
             GET REQUEST
         */
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> GetAll([FromQuery] ReceiptQueryObject query)
         {
             var receipt = await _receiptRepo.GetAllReceiptAsync(query);
