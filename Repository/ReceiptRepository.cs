@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using split_api.Data;
 using split_api.DTO.Receipt;
-using split_api.DTO.SplitUser;
+//using split_api.DTO.SplitUser;
 using split_api.Helpers;
 using split_api.Interfaces;
 using split_api.Models;
