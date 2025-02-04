@@ -1,11 +1,13 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace split_api.Models
 {
+    [Table("Receipts")]
     public class Receipt
     {
         public int Id { get; set; }
@@ -24,6 +26,6 @@ namespace split_api.Models
             List<CustomerReceipt> CustomerReceipt - many-to-many (Customer and Receipt)
         ****************************************************************/
         public List<Item> Items { get; set; } = new List<Item>();
-        //public List<CustomerReceipt> CustomerReceipt { get; set; } = new List<CustomerReceipt>();
+        public List<CustomerReceipt> CustomerReceipt { get; set; } = new List<CustomerReceipt>();
     }
 }

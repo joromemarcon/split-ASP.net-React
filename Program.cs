@@ -56,8 +56,9 @@ builder.Services.AddDbContext<DataContext>(options =>
 });
 
 /*
-    Here I am setting the password requirements.
-    I want it to be just digits of at least 5
+    -   Here I am setting the password requirements.
+        I want it to be just digits of at least 5
+    -   passing in the default IdentityRole: Admin/User
 
     ->  Future work, create a customPassword requirement
         so that max digits will be 5 digits
@@ -73,6 +74,12 @@ builder.Services.AddIdentity<SplitUser, IdentityRole>(options =>
 })
 .AddEntityFrameworkStores<DataContext>();
 
+/*
+    -   This method is required to be able to configure how users are authenticated.
+        (sign in/sign out)
+    - AddAuthentication sets JWWTBearer authentication handler to handle authentication
+
+*/
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme =
@@ -85,6 +92,10 @@ builder.Services.AddAuthentication(options =>
 {
     /*
         The validation parameters are defined in appsettings.json
+
+        ValidIssuer and ValidAudience are part of the token validation 
+        parameters used to ensure the authenticity of a JWT. They help verify that the 
+        token was issued by a trusted authority and intended for the correct audience.
         
         ->  The signing key needs to be modified and hidden.
             current SigningKey is temporary
@@ -119,7 +130,7 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 /*
-    Added for Identity/Authorization
+    Middleware for Identity/Authorization
 */
 app.UseAuthentication();
 app.UseAuthorization();

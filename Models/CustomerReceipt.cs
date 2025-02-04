@@ -1,10 +1,12 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace split_api.Models
 {
+    [Table("CustomerReceipts")]
     public class CustomerReceipt
     {
         public int Id { get; set; }
