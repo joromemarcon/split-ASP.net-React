@@ -51,13 +51,13 @@ namespace split_api.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "9489888b-1770-4fc4-b14b-f20e44ada50d",
+                            Id = "04dc03c5-a4fb-403e-a48a-60f2adf78405",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "7ddab055-d29b-401a-89d7-003299de827c",
+                            Id = "9cdbfff4-8a8d-42e4-a406-f715333770de",
                             Name = "User",
                             NormalizedName = "USER"
                         });
@@ -171,36 +171,27 @@ namespace split_api.Migrations
 
             modelBuilder.Entity("split_api.Models.CustomerReceipt", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("DateTimePaid")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsPaid")
-                        .HasColumnType("bit");
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("ReceiptId")
                         .HasColumnType("int");
 
-                    b.Property<string>("SplitUserId")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<DateTime>("DateTimePaid")
+                        .HasColumnType("datetime2");
 
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("Id")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsPaid")
+                        .HasColumnType("bit");
 
                     b.Property<bool>("isOwner")
                         .HasColumnType("bit");
 
-                    b.HasKey("Id");
+                    b.HasKey("UserId", "ReceiptId");
 
                     b.HasIndex("ReceiptId");
-
-                    b.HasIndex("SplitUserId");
 
                     b.ToTable("CustomerReceipts");
                 });
@@ -394,14 +385,16 @@ namespace split_api.Migrations
             modelBuilder.Entity("split_api.Models.CustomerReceipt", b =>
                 {
                     b.HasOne("split_api.Models.Receipt", "Receipt")
-                        .WithMany()
+                        .WithMany("CustomerReceipt")
                         .HasForeignKey("ReceiptId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("split_api.Models.SplitUser", "SplitUser")
                         .WithMany("CustomerReceipt")
-                        .HasForeignKey("SplitUserId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Receipt");
 
@@ -421,6 +414,8 @@ namespace split_api.Migrations
 
             modelBuilder.Entity("split_api.Models.Receipt", b =>
                 {
+                    b.Navigation("CustomerReceipt");
+
                     b.Navigation("Items");
                 });
 

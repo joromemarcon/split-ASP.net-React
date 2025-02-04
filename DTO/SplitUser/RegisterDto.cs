@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace split_api.DTO.SplitUser
 {
+    /*
+        Request DTO
+    */
     public class RegisterDto
     {
         [Required]
@@ -14,6 +17,7 @@ namespace split_api.DTO.SplitUser
         [EmailAddress]
         public string? Email { get; set; }
         [Required]
+        [MaxLength(5)]
         public string? Password { get; set; }
     }
 }

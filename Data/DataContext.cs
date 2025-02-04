@@ -9,6 +9,7 @@ using split_api.Models;
 
 namespace split_api.Data
 {
+    //Passing in SplitUser into IdentityDBContext so DBcontext doesnt default to IdentityUser class
     public class DataContext : IdentityDbContext<SplitUser>
     {
         public DataContext(DbContextOptions<DataContext> dbContextOptions) : base(dbContextOptions)
@@ -35,6 +36,19 @@ namespace split_api.Data
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
+
+            builder.Entity<CustomerReceipt>(x => x.HasKey(p => new { p.UserId, p.ReceiptId }));
+
+            builder.Entity<CustomerReceipt>()
+                .HasOne(u => u.SplitUser)
+                .WithMany(u => u.CustomerReceipt)
+                .HasForeignKey(p => p.UserId);
+
+            builder.Entity<CustomerReceipt>()
+                .HasOne(u => u.Receipt)
+                .WithMany(u => u.CustomerReceipt)
+                .HasForeignKey(p => p.ReceiptId);
+
             List<IdentityRole> roles = new List<IdentityRole>
             {
                 new IdentityRole
