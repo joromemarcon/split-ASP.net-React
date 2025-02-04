@@ -1,79 +1,106 @@
-// using System;
-// using System.Collections.Generic;
-// using System.Linq;
-// using System.Threading.Tasks;
-// using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using split_api.Extensions;
+
 // using split_api.DTO.CustomerReceipt;
-// using split_api.Helpers;
-// using split_api.Interfaces;
-// using split_api.Mappers;
+using split_api.Helpers;
+using split_api.Interfaces;
+using split_api.Mappers;
+using split_api.Models;
 
-// namespace split_api.Controllers
-// {
-//     [Route("CustomerReceipt")]
-//     [ApiController]
-//     public class CustomerReceiptController : ControllerBase
-//     {
-//         private readonly ICustomerReceiptRepository _customerReceiptRepo;
-//         private readonly IReceiptRepository _receiptRepo;
-//         private readonly ISplitUserRepository _userRepository;
+namespace split_api.Controllers
+{
+    [Route("CustomerReceipt")]
+    [ApiController]
+    public class CustomerReceiptController : ControllerBase
+    {
+        private readonly UserManager<SplitUser> _userManager;
+        private readonly IReceiptRepository _receiptRepo;
+        private readonly ICustomerReceiptRepository _customerReceiptRepo;
+        public CustomerReceiptController(UserManager<SplitUser> userManager,
+                                        IReceiptRepository receiptRepo,
+                                        ICustomerReceiptRepository customerReceiptRepo)
+        {
+            _userManager = userManager;
+            _receiptRepo = receiptRepo;
+            _customerReceiptRepo = customerReceiptRepo;
+        }
 
-//         public CustomerReceiptController(ICustomerReceiptRepository customerReceiptRepo, IReceiptRepository receiptRepo, ISplitUserRepository userRepository)
-//         {
-//             _customerReceiptRepo = customerReceiptRepo;
-//             _receiptRepo = receiptRepo;
-//             _userRepository = userRepository;
-//         }
+        [HttpGet]
+        [Authorize]
+        public async Task<IActionResult> GetCustomerReceipt()
+        {
+            var username = User.GetUserName();
+            var splitUser = await _userManager.FindByNameAsync(username);
+            var userReceipt = await _customerReceiptRepo.GetCustomerReceipt(splitUser);
+            return Ok(userReceipt);
+        }
 
-//         [HttpGet]
-//         public async Task<IActionResult> GetAllCR([FromQuery] CustomerReceiptQueryObject query)
-//         {
-//             var customerReceipt = await _customerReceiptRepo.GetAllCRAsync(query);
-//             var customerReceiptDto = customerReceipt.Select(c => c.ToCustomerReceiptDto());
+        //         private readonly ICustomerReceiptRepository _customerReceiptRepo;
+        //         private readonly IReceiptRepository _receiptRepo;
+        //         private readonly ISplitUserRepository _userRepository;
 
-//             return Ok(customerReceiptDto);
+        //         public CustomerReceiptController(ICustomerReceiptRepository customerReceiptRepo, IReceiptRepository receiptRepo, ISplitUserRepository userRepository)
+        //         {
+        //             _customerReceiptRepo = customerReceiptRepo;
+        //             _receiptRepo = receiptRepo;
+        //             _userRepository = userRepository;
+        //         }
 
-//         }
+        //         [HttpGet]
+        //         public async Task<IActionResult> GetAllCR([FromQuery] CustomerReceiptQueryObject query)
+        //         {
+        //             var customerReceipt = await _customerReceiptRepo.GetAllCRAsync(query);
+        //             var customerReceiptDto = customerReceipt.Select(c => c.ToCustomerReceiptDto());
 
-//         [HttpGet("{id}")]
-//         public async Task<IActionResult> GetCustomerReceiptById([FromRoute] int id)
-//         {
-//             var customerReceipt = await _customerReceiptRepo.GetCustomerReceiptByIdAsync(id);
-//             if (customerReceipt is null) return NotFound();
+        //             return Ok(customerReceiptDto);
 
-//             return Ok(customerReceipt);
-//         }
+        //         }
 
-//         [HttpPost("{userId}/{receiptId}/{isOwner}")]
-//         public async Task<IActionResult> CreateCustomerReceipt([FromRoute] string userId, int receiptId, bool isOwner, CreateCustomerReceiptDto customerReceiptDto)
-//         {
-//             if (!await _userRepository.userExist(userId)) return NotFound("User Does Not Exist!");
-//             if (!await _receiptRepo.receiptExists(receiptId)) return NotFound("Receipt Not Found!");
+        //         [HttpGet("{id}")]
+        //         public async Task<IActionResult> GetCustomerReceiptById([FromRoute] int id)
+        //         {
+        //             var customerReceipt = await _customerReceiptRepo.GetCustomerReceiptByIdAsync(id);
+        //             if (customerReceipt is null) return NotFound();
 
-//             var customerReceipt = customerReceiptDto.ToCrFromCreateCr(userId, receiptId, isOwner);
-//             await _customerReceiptRepo.CreateCustomerReceiptAsync(customerReceipt);
+        //             return Ok(customerReceipt);
+        //         }
 
-//             return CreatedAtAction(nameof(GetCustomerReceiptById), new { id = customerReceipt.Id }, customerReceipt.ToCustomerReceiptDto());
+        //         [HttpPost("{userId}/{receiptId}/{isOwner}")]
+        //         public async Task<IActionResult> CreateCustomerReceipt([FromRoute] string userId, int receiptId, bool isOwner, CreateCustomerReceiptDto customerReceiptDto)
+        //         {
+        //             if (!await _userRepository.userExist(userId)) return NotFound("User Does Not Exist!");
+        //             if (!await _receiptRepo.receiptExists(receiptId)) return NotFound("Receipt Not Found!");
 
-//         }
+        //             var customerReceipt = customerReceiptDto.ToCrFromCreateCr(userId, receiptId, isOwner);
+        //             await _customerReceiptRepo.CreateCustomerReceiptAsync(customerReceipt);
 
-//         [HttpPut("{id}")]
-//         public async Task<IActionResult> UpdateCustomerReceipt([FromRoute] int id, [FromBody] UpdateCustomerReceiptDto updateDto)
-//         {
-//             var customerReceipt = await _customerReceiptRepo.UpdateCustomerReceiptAsync(id, updateDto.ToCrFromUpdateCr());
-//             if (customerReceipt is null) return NotFound("Customer Receipt not Found!");
+        //             return CreatedAtAction(nameof(GetCustomerReceiptById), new { id = customerReceipt.Id }, customerReceipt.ToCustomerReceiptDto());
 
-//             return Ok(customerReceipt.ToCustomerReceiptDto());
-//         }
+        //         }
 
-//         [HttpDelete("{id}")]
-//         public async Task<IActionResult> DeleteCustomerReceipt([FromRoute] int id)
-//         {
-//             var customerReceipt = await _customerReceiptRepo.DeleteCustomerReceiptByIdAsync(id);
-//             if (customerReceipt is null) return NotFound();
+        //         [HttpPut("{id}")]
+        //         public async Task<IActionResult> UpdateCustomerReceipt([FromRoute] int id, [FromBody] UpdateCustomerReceiptDto updateDto)
+        //         {
+        //             var customerReceipt = await _customerReceiptRepo.UpdateCustomerReceiptAsync(id, updateDto.ToCrFromUpdateCr());
+        //             if (customerReceipt is null) return NotFound("Customer Receipt not Found!");
 
-//             return NoContent();
-//         }
+        //             return Ok(customerReceipt.ToCustomerReceiptDto());
+        //         }
 
-//     }
-// }
+        //         [HttpDelete("{id}")]
+        //         public async Task<IActionResult> DeleteCustomerReceipt([FromRoute] int id)
+        //         {
+        //             var customerReceipt = await _customerReceiptRepo.DeleteCustomerReceiptByIdAsync(id);
+        //             if (customerReceipt is null) return NotFound();
+
+        //             return NoContent();
+        //         }
+
+    }
+}
