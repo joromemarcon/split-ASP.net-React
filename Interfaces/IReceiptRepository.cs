@@ -13,6 +13,7 @@ namespace split_api.Interfaces
     {
         Task<List<Receipt>> GetAllReceiptAsync(ReceiptQueryObject query);
         Task<Receipt?> GetReceiptByIdAsync(int id);
+        Task<Receipt?> GetReceiptByReceiptCode(string receiptCode);
         Task<Receipt> CreateReceiptAsync(Receipt receiptModel);
         Task<Receipt?> DeleteReceiptAsync(int id);
         Task<Receipt?> UpdateReceiptAsync(int id, UpdateReceiptDto updateReceiptDto);

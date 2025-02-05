@@ -58,6 +58,11 @@ namespace split_api.Repository
             return await _context.Receipts.Include(i => i.Items).FirstOrDefaultAsync(i => i.Id == id);
         }
 
+        public async Task<Receipt?> GetReceiptByReceiptCode(string receiptCode)
+        {
+            return await _context.Receipts.FirstOrDefaultAsync(s => s.ReceiptCode == receiptCode);
+        }
+
         public Task<bool> receiptExists(int id)
         {
             return _context.Receipts.AnyAsync(r => r.Id == id);

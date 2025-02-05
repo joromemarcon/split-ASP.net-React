@@ -21,12 +21,21 @@ namespace split_api.Repository
         {
             _context = context;
         }
+
+        public async Task<CustomerReceipt> CreateAsync(CustomerReceipt customerReceipt)
+        {
+            await _context.CustomerReceipts.AddAsync(customerReceipt);
+            await _context.SaveChangesAsync();
+
+            return customerReceipt;
+        }
+
         public async Task<List<Receipt>> GetCustomerReceipt(SplitUser user)
         {
             return await _context.CustomerReceipts.Where(x => x.UserId == user.Id)
             .Select(receipt => new Receipt
             {
-                Id = receipt.Id,
+                Id = receipt.Receipt.Id,
                 ReceiptCode = receipt.Receipt.ReceiptCode,
                 TransactionNumber = receipt.Receipt.TransactionNumber,
                 EstablishmentName = receipt.Receipt.EstablishmentName,
