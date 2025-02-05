@@ -41,6 +41,40 @@ namespace split_api.Controllers
             return Ok(userReceipt);
         }
 
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> AddCustomerReceipt(string receiptCode)
+        {
+            var username = User.GetUserName();
+            var splitUser = await _userManager.FindByNameAsync(username);
+            var receipt = await _receiptRepo.GetReceiptByReceiptCode(receiptCode);
+
+            if (receipt == null) return BadRequest("Receipt not found!");
+
+            var customerReceipt = await _customerReceiptRepo.GetCustomerReceipt(splitUser);
+
+            if (customerReceipt.Any(e => e.ReceiptCode.ToLower() == receiptCode.ToLower())) return BadRequest("Cannot Add Receipt!");
+
+            var customerReceiptModel = new CustomerReceipt
+            {
+                UserId = splitUser.Id,
+                ReceiptId = receipt.Id,
+                IsPaid = false,
+                DateTimePaid = DateTime.MinValue
+            };
+
+            await _customerReceiptRepo.CreateAsync(customerReceiptModel);
+
+            if (customerReceiptModel == null)
+            {
+                return StatusCode(500, "Could not created");
+            }
+            else
+            {
+                return Created();
+            }
+        }
+
         //         private readonly ICustomerReceiptRepository _customerReceiptRepo;
         //         private readonly IReceiptRepository _receiptRepo;
         //         private readonly ISplitUserRepository _userRepository;

@@ -10,6 +10,7 @@ namespace split_api.Interfaces
     public interface ICustomerReceiptRepository
     {
         Task<List<Receipt>> GetCustomerReceipt(SplitUser user);
+        Task<CustomerReceipt> CreateAsync(CustomerReceipt customerReceipt);
         //         Task<List<CustomerReceipt>> GetAllCRAsync(CustomerReceiptQueryObject query);
         //         Task<CustomerReceipt?> GetCustomerReceiptByIdAsync(int id);
         //         Task<CustomerReceipt?> CreateCustomerReceiptAsync(CustomerReceipt customerReceipt);
