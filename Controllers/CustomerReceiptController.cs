@@ -75,6 +75,31 @@ namespace split_api.Controllers
             }
         }
 
+        [HttpDelete]
+        [Authorize]
+        public async Task<IActionResult> RemoveCustomerReceipt(string receipt)
+        {
+            var username = User.GetUserName();
+            var splitUser = await _userManager.FindByNameAsync(username);
+
+            var userReceipt = await _customerReceiptRepo.GetCustomerReceipt(splitUser);
+
+            var filteredReceipt = userReceipt.Where(r => r.ReceiptCode.ToLower() == receipt.ToLower()).ToList();
+
+            if (filteredReceipt.Count() == 1)
+            {
+                await _customerReceiptRepo.DeleteCustomerReceipt(splitUser, receipt);
+            }
+            else
+            {
+                return BadRequest("Receipt does not exist with this user");
+            }
+
+            return Ok();
+
+
+        }
+
         //         private readonly ICustomerReceiptRepository _customerReceiptRepo;
         //         private readonly IReceiptRepository _receiptRepo;
         //         private readonly ISplitUserRepository _userRepository;
