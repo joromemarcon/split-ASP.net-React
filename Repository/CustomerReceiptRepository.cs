@@ -42,10 +42,22 @@ namespace split_api.Repository
                 TransactionDateTime = receipt.Receipt.TransactionDateTime,
                 TransactionTotal = receipt.Receipt.TransactionTotal,
                 TransactionTax = receipt.Receipt.TransactionTax,
-                TransactionTip = receipt.Receipt.TransactionTip
+                TransactionTip = receipt.Receipt.TransactionTip,
+                Items = receipt.Receipt.Items
             }).ToListAsync();
         }
 
+        public async Task<CustomerReceipt> DeleteCustomerReceipt(SplitUser splitUser, string receiptCode)
+        {
+            var customerReceiptModel = await _context.CustomerReceipts.FirstOrDefaultAsync(x => x.UserId == splitUser.Id && x.Receipt.ReceiptCode.ToLower() == receiptCode.ToLower());
+
+            if (customerReceiptModel == null) return null;
+
+            _context.CustomerReceipts.Remove(customerReceiptModel);
+            await _context.SaveChangesAsync();
+
+            return customerReceiptModel;
+        }
 
         //         private readonly DataContext _context;
         //         public CustomerReceiptRepository(DataContext context)
