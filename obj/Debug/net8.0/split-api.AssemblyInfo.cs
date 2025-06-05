@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("split-api")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+fd978530b9e532a60a0a6127befbd4bd232c1450")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+f4156143f2ae26c6230745c90019f5d239d794c4")]
 [assembly: System.Reflection.AssemblyProductAttribute("split-api")]
 [assembly: System.Reflection.AssemblyTitleAttribute("split-api")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
