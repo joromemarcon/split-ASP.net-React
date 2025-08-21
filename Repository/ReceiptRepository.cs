@@ -38,7 +38,7 @@ namespace split_api.Repository
             await _context.SaveChangesAsync();
 
             return receiptModel;
-        }
+        } 
 
         public async Task<List<Receipt>> GetAllReceiptAsync(ReceiptQueryObject query)
         {

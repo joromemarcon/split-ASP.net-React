@@ -39,13 +39,13 @@ namespace split_api.Controllers
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
-            var user = await _userManager.Users.FirstOrDefaultAsync(x => x.UserName == loginDto.UserName.ToLower());
+            var user = await _userManager.Users.FirstOrDefaultAsync(x => x.Email == loginDto.Email.ToLower());
 
-            if (user == null) return Unauthorized("Invalid username!");
+            if (user == null) return Unauthorized("Invalid email!");
 
             //Last argument sets lockoutfailure to false to avoid account locking up when logged incorrectly
             var result = await _signInManager.CheckPasswordSignInAsync(user, loginDto.Password, false);
-            if (!result.Succeeded) return Unauthorized("Username not found or password incorrect");
+            if (!result.Succeeded) return Unauthorized("Email not found or password incorrect");
 
             return Ok(
                 new NewUserDto
@@ -67,7 +67,8 @@ namespace split_api.Controllers
                 var splitUser = new SplitUser
                 {
                     UserName = registerDto.Username,
-                    Email = registerDto.Email
+                    Email = registerDto.Email,
+                    FullName = registerDto.FullName ?? ""
                 };
 
                 var createdUser = await _userManager.CreateAsync(splitUser, registerDto.Password);
@@ -108,6 +109,29 @@ namespace split_api.Controllers
             catch (Exception e)
             {
                 return StatusCode(500, e);
+            }
+        }
+
+        [HttpGet("all-users")]
+        public async Task<IActionResult> GetAllUsers()
+        {
+            try
+            {
+                var users = await _userManager.Users.Select(u => new {
+                    username = u.UserName,
+                    email = u.Email,
+                    fullName = u.FullName,
+                    id = u.Id
+                }).ToListAsync();
+                
+                return Ok(new { 
+                    count = users.Count,
+                    users = users 
+                });
+            }
+            catch (Exception e)
+            {
+                return StatusCode(500, e.Message);
             }
         }
 

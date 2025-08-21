@@ -17,7 +17,9 @@ namespace split_api.DTO.SplitUser
         [EmailAddress]
         public string? Email { get; set; }
         [Required]
-        [MaxLength(5)]
+        [MinLength(5)]
         public string? Password { get; set; }
+        [Required]
+        public string? FullName { get; set; }
     }
 }
