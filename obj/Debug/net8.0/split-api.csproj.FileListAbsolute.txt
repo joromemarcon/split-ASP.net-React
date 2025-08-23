@@ -152,3 +152,5 @@ C:\Users\jorom\..Personal_Programming\2024\split-api\bin\Debug\net8.0\Microsoft.
 C:\Users\jorom\..Personal_Programming\2024\split-api\bin\Debug\net8.0\Microsoft.Extensions.Logging.dll
 C:\Users\jorom\..Personal_Programming\2024\split-api\bin\Debug\net8.0\Microsoft.Extensions.Logging.Abstractions.dll
 C:\Users\jorom\..Personal_Programming\2024\split-api\bin\Debug\net8.0\Microsoft.Extensions.Options.dll
+C:\Users\jorom\..Personal_Programming\2024\split-api\bin\Debug\net8.0\DotNetEnv.dll
+C:\Users\jorom\..Personal_Programming\2024\split-api\bin\Debug\net8.0\Sprache.dll
