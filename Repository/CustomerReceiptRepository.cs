@@ -59,59 +59,6 @@ namespace split_api.Repository
             return customerReceiptModel;
         }
 
-        //         private readonly DataContext _context;
-        //         public CustomerReceiptRepository(DataContext context)
-        //         {
-        //             _context = context;
-        //         }
-
-        //         public async Task<CustomerReceipt?> CreateCustomerReceiptAsync(CustomerReceipt customerReceipt)
-        //         {
-        //             await _context.CustomerReceipts.AddAsync(customerReceipt);
-        //             await _context.SaveChangesAsync();
-
-        //             return customerReceipt;
-        //         }
-
-        //         public async Task<CustomerReceipt?> DeleteCustomerReceiptByIdAsync(int id)
-        //         {
-        //             var customerReceiptModel = await _context.CustomerReceipts.FirstOrDefaultAsync(c => c.Id == id);
-        //             if (customerReceiptModel is null) return null;
-
-        //             _context.CustomerReceipts.Remove(customerReceiptModel);
-        //             await _context.SaveChangesAsync();
-
-        //             return customerReceiptModel;
-        //         }
-
-        //         public async Task<List<CustomerReceipt>> GetAllCRAsync(CustomerReceiptQueryObject query)
-        //         {
-        //             var customerReceipt = _context.CustomerReceipts.AsQueryable();
-        //             if (query.ReceiptId != null && query.UserId != null)
-        //             {
-        //                 customerReceipt = customerReceipt.Where(r => r.ReceiptId.Equals(query.ReceiptId) ||
-        //                                         r.UserId.Equals(query.UserId));
-        //             }
-        //             return await customerReceipt.ToListAsync();
-        //         }
-
-        //         public async Task<CustomerReceipt?> GetCustomerReceiptByIdAsync(int id)
-        //         {
-        //             return await _context.CustomerReceipts.FindAsync(id);
-        //         }
-
-        //         public async Task<CustomerReceipt?> UpdateCustomerReceiptAsync(int id, CustomerReceipt customerReceiptModel)
-        //         {
-        //             var existingCustomerReceipt = await _context.CustomerReceipts.FindAsync(id);
-        //             if (existingCustomerReceipt is null) return null;
-
-        //             existingCustomerReceipt.isOwner = customerReceiptModel.isOwner;
-        //             existingCustomerReceipt.IsPaid = customerReceiptModel.IsPaid;
-
-        //             await _context.SaveChangesAsync();
-
-        //             return existingCustomerReceipt;
-        //         }
     }
 
 }

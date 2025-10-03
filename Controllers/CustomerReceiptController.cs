@@ -41,6 +41,38 @@ namespace split_api.Controllers
             return Ok(userReceipt);
         }
 
+        /*
+            Use to join an existing receipt as non-owner
+        */
+
+        // [HttpPost]
+        // [Authorize]
+        // public async Task<IActionResult> JoinReceipt(string receiptCode, bool isOwner)
+        // {
+        //     var username = User.GetUserName();
+        //     var splitUser = await _userManager.FindByNameAsync(username);
+        //     var receipt = await _receiptRepo.GetReceiptByReceiptCode(receiptCode);
+
+        //     if (receipt == null) return BadRequest("Receipt not found!");
+
+        //     var customerReceipt = await _customerReceiptRepo.GetCustomerReceipt(splitUser);
+
+        //     if (customerReceipt.Any(e => e.ReceiptCode.ToLower() == receiptCode.ToLower())) return BadRequest("Cannot Add Receipt!");
+
+        //     var customerReceiptModel = new CustomerReceipt
+        //     {
+        //         UserId = splitUser.Id,
+        //         ReceiptId = receipt.Id,
+        //         IsPaid = false,
+        //         isOwner = false,
+        //         DateTimePaid = DateTime.MinValue
+
+        //     };
+
+        //     await _customerReceiptRepo.CreateAsync(customerReceiptModel);
+        //     return Ok("Successfully joined receipt!");
+        // }
+
         [HttpPost]
         [Authorize]
         public async Task<IActionResult> AddCustomerReceipt(string receiptCode)
