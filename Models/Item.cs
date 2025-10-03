@@ -14,6 +14,9 @@ namespace split_api.Models
         public decimal ItemPrice { get; set; }
         public int PaidCustomerId { get; set; }
 
+        [NotMapped]
+        public string? PaidCustomerName { get; set; }
+
         /****************************************************************
         Foreign Keys and Navigation Properties
             - Join table elements for Item and Receipt 1-to-m relationship
