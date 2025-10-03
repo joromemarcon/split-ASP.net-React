@@ -75,7 +75,7 @@ namespace split_api.Controllers
 
         [HttpPost]
         [Authorize]
-        public async Task<IActionResult> AddCustomerReceipt(string receiptCode)
+        public async Task<IActionResult> AddCustomerReceipt(string receiptCode, bool isOwner = false)
         {
             var username = User.GetUserName();
             var splitUser = await _userManager.FindByNameAsync(username);
@@ -91,6 +91,7 @@ namespace split_api.Controllers
             {
                 UserId = splitUser.Id,
                 ReceiptId = receipt.Id,
+                isOwner = isOwner,
                 IsPaid = false,
                 DateTimePaid = DateTime.MinValue
             };

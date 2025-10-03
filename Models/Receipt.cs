@@ -20,6 +20,14 @@ namespace split_api.Models
         public decimal TransactionTip { get; set; }
 
         /****************************************************************
+            Additional Properties (Not Mapped to Database):
+
+            isOwner - Indicates if the current user is the owner of this receipt
+        ****************************************************************/
+        [NotMapped]
+        public bool? isOwner { get; set; }
+
+        /****************************************************************
             Navigation Properties:
 
             List<Item> Items - One-to-Many (Receipt and Items)

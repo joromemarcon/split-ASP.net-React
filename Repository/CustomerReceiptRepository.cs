@@ -43,7 +43,8 @@ namespace split_api.Repository
                 TransactionTotal = receipt.Receipt.TransactionTotal,
                 TransactionTax = receipt.Receipt.TransactionTax,
                 TransactionTip = receipt.Receipt.TransactionTip,
-                Items = receipt.Receipt.Items
+                Items = receipt.Receipt.Items,
+                isOwner = receipt.isOwner
             }).ToListAsync();
         }
 
