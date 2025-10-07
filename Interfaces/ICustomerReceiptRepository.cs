@@ -12,6 +12,7 @@ namespace split_api.Interfaces
         Task<List<Receipt>> GetCustomerReceipt(SplitUser user);
         Task<CustomerReceipt> CreateAsync(CustomerReceipt customerReceipt);
         Task<CustomerReceipt> DeleteCustomerReceipt(SplitUser splitUser, string receiptCode);
+        Task<bool> IsUserOwnerOfReceipt(string userId, int receiptId);
         //         Task<List<CustomerReceipt>> GetAllCRAsync(CustomerReceiptQueryObject query);
         //         Task<CustomerReceipt?> GetCustomerReceiptByIdAsync(int id);
         //         Task<CustomerReceipt?> CreateCustomerReceiptAsync(CustomerReceipt customerReceipt);

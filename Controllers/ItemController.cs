@@ -51,21 +51,23 @@ namespace split_api.Controllers
             return Ok(item);
         }
 
-        // [HttpGet("ByReceiptId/{itemName}/{receiptId}")]
-        // public async Task<IActionResult> GetByReceiptId([FromRoute] int receiptId, string itemName)
-        // {
-        //     var item = await _itemRepo.GetItemyReceiptIdAsync(receiptId, itemName);
-        //     if (item is null) return NotFound();
-        //     return Ok(item);
-        // }
-
         [HttpPost("{receiptId}")]
+        [Authorize]
         public async Task<IActionResult> CreateItem([FromRoute] int receiptId, CreateItemDto itemDto)
         {
             if (!await _receiptRepo.receiptExists(receiptId))
             {
                 return BadRequest("Receipt Does Not Exist!");
             }
+
+            //Get current user (authorize)
+            var username = User.GetUserName();
+            var splitUser = await _userManager.FindByNameAsync(username);
+            if (splitUser == null) return Unauthorized();
+
+            //Verify if user is owner of receipt
+            var isOwner = await _customerReceiptRepo.IsUserOwnerOfReceipt(splitUser.Id, receiptId);
+            if (!isOwner) return StatusCode(403, "Only receipt owner can add items");
 
             var itemModel = itemDto.ToItemFromCreateItem(receiptId);
             await _itemRepo.CreateItemAsync(itemModel);
@@ -74,20 +76,48 @@ namespace split_api.Controllers
         }
 
         [HttpPut("{id}")]
+        [Authorize]
         public async Task<IActionResult> UpdateItem([FromRoute] int id, [FromBody] UpdateItemRequestDto updateDto)
         {
+            //get item to find its receipt
+            var existingItem = await _itemRepo.GetItemByIdAsync(id);
+            if (existingItem == null) return NotFound("Item not found!");
+
+            //get current user
+            var username = User.GetUserName();
+            var splitUser = await _userManager.FindByNameAsync(username);
+
+            if (splitUser == null) return Unauthorized();
+
+            //verify if user is owner of receipt
+            var isOwner = await _customerReceiptRepo.IsUserOwnerOfReceipt(splitUser.Id, existingItem.ReceiptId);
+            if (!isOwner) return StatusCode(403, "Only receipt owner can edit items");
+
+            //update
             var item = await _itemRepo.UpdateItemAsync(id, updateDto.ToItemFromUpdateItem());
-            if (item is null) return NotFound("Item Not Found!");
 
             return Ok(item.ToItemDto());
         }
 
         [HttpDelete("{id}")]
+        [Authorize]
         public async Task<IActionResult> DeleteItem([FromRoute] int id)
         {
-            var itemModel = await _itemRepo.DeleteItemAsync(id);
-            if (itemModel is null) return NotFound();
+            //get the item to find its receipt
+            var existingItem = await _itemRepo.GetItemByIdAsync(id);
+            if (existingItem == null) return NotFound();
 
+            //get current user
+            var username = User.GetUserName();
+            var splitUser = await _userManager.FindByNameAsync(username);
+
+            if (splitUser == null) return Unauthorized();
+
+            //verify if user is owner of receipt
+            var isOwner = await _customerReceiptRepo.IsUserOwnerOfReceipt(splitUser.Id, existingItem.ReceiptId);
+            if (!isOwner) return StatusCode(403, "Only the receipt owner can delete items!");
+
+            var itemModel = await _itemRepo.DeleteItemAsync(id);
             return NoContent();
         }
 

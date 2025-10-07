@@ -90,7 +90,8 @@ namespace split_api.Repository
                 TransactionTotal = receipt.Receipt.TransactionTotal,
                 TransactionTax = receipt.Receipt.TransactionTax,
                 TransactionTip = receipt.Receipt.TransactionTip,
-                Items = receipt.Receipt.Items.Select(item => {
+                Items = receipt.Receipt.Items.Select(item =>
+                {
                     var itemResult = new Item
                     {
                         Id = item.Id,
@@ -145,6 +146,14 @@ namespace split_api.Repository
             await _context.SaveChangesAsync();
 
             return customerReceiptModel;
+        }
+
+        public async Task<bool> IsUserOwnerOfReceipt(string userId, int receiptId)
+        {
+            var customerReceipt = await _context.CustomerReceipts
+            .FirstOrDefaultAsync(cr => cr.UserId == userId && cr.ReceiptId == receiptId);
+
+            return customerReceipt?.isOwner ?? false;
         }
 
     }
